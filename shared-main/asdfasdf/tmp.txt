@@ -1,0 +1,19 @@
+/*
+ft_printf("\n");
+i = 1;
+while (token != NULL)
+{
+	if (token->type == TOKEN_PIPE)
+	{
+		ft_printf(" | ");
+		token = token->next;
+	}
+	else
+	{
+		ft_printf("cmd%d", i);
+		while (token != NULL && token->type != TOKEN_PIPE)
+			token = token->next;
+		i++;
+	}
+}
+ft_printf("\n");*/
