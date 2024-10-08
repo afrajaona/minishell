@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "libft.h"
+#include "../fact/parse.h"
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
@@ -23,116 +24,6 @@
 
 #define SINGLE_QUOTE			'\''
 #define DOUBLE_QUOTE			'\"'
-
-typedef int	t_type;
-
-typedef enum e_bool
-{
-	false,
-	true
-}			t_bool;
-
-typedef struct s_arg
-{
-	char			*value;
-	struct s_arg	*next;
-}				t_arg;
-
-typedef struct s_input_redir
-{
-	int		n_arg;
-	char	*filename;
-	t_list	*expand;
-}				t_input_redir;
-
-typedef struct s_output_redir
-{
-	int		n_arg;
-	char	*filename;
-	t_list	*expand;
-}				t_output_redir;
-
-typedef struct s_append
-{
-	int		n_arg;
-	char	*filename;
-	t_list	*expand;
-}				t_append;
-
-typedef struct s_heredoc
-{
-	t_bool	is_exec;
-	char	*limiter;
-	int		heredocfd[2];
-}				t_heredoc;
-
-typedef union u_input_value
-{
-	t_input_redir	*input_redir;
-	t_heredoc		*heredoc;
-}				t_input_value;
-
-typedef union u_output_value
-{
-	t_output_redir	*output_redir;
-	t_append		*append;
-}				t_output_value;
-
-typedef struct s_input
-{
-	t_type			type;
-	t_input_value	value;
-	struct s_input	*next;
-}				t_input;
-
-typedef struct s_output
-{
-	t_type			type;
-	t_output_value	data;
-	struct s_output	*next;
-}				t_output;
-
-typedef	union	u_data
-{
-	t_input_value	*input_value;
-	t_output_value	*output_value;
-	t_append	*append;
-	t_heredoc	*heredoc;
-}	t_data;
-
-typedef	struct	s_redir
-{
-	t_type			type;
-	t_data			*data;
-	struct s_redir	*next;
-}	t_redir;
-
-typedef struct s_cmd
-{
-	char		*value;
-	t_redir		*redir;
-	t_arg		*arg;
-}				t_cmd;
-
-typedef struct s_pipe
-{
-	int	pipefd[2];
-}				t_pipe;
-
-typedef union u_parse_value
-{
-	t_cmd	*cmd;
-	t_pipe	*pipe;
-}			t_parse_value;
-
-
-typedef struct s_parse
-{
-	t_type			type;
-	t_parse_value	data;
-	struct s_node	*next;
-	struct s_node	*prev;
-}				t_parse;
 
 void	error_msg(char *target, char *message, int path_on);
 void	ft_redir(t_redir *redir);

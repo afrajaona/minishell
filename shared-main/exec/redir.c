@@ -91,14 +91,14 @@ void	ft_redir(t_redir *redir)
 	while (temp)
 	{
 		if (temp->type == TOKEN_INPUT_REDIR)
-			ft_redir_input((t_input_redir *)temp->data);
+			ft_redir_input((t_input_redir *)&temp->value);
 		else if (temp->type == TOKEN_OUTPUT_REDIR)
-			ft_redir_output((t_output_redir *)temp->data);
+			ft_redir_output((t_output_redir *)&temp->value);
 		else if (temp->type == TOKEN_APPEND)
-			ft_append((t_append *)temp->data);
+			ft_append((t_append *)&temp->value);
 		else if (temp->type == TOKEN_HEREDOC)
 		{
-			if (dup2(((t_heredoc *)temp->data)->heredocfd[0], STDOUT_FILENO) == -1)
+			if (dup2(((t_heredoc *)&temp->value)->heredocfd[0], STDOUT_FILENO) == -1)
 			{
 				perror("heredoc redir");
 				return ;
