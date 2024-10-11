@@ -22,31 +22,37 @@ t_bool	is_builtin(char	*cmd)
 			||(!ft_strncmp(cmd, "exit", 4) && ft_strlen(cmd) == 4))
 }
 
-void	exec_builtin(t_cmd *cmd, char ***env_var, char **export_var)
+int	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
 {
 	char	**cmd_line;
 
 	if (!ft_strncmp(cmd->value, "cd", 2))
-		cd(cmd);
+		cd(cmd, data);
 	if (!ft_strncmp(cmd->value, "pwd", 3))
 		pwd();
 	if (!ft_strncmp(cmd->value, "env", 3))
-		env(*env_var);
+		env(data->env);
 	if (!ft_strncmp(cmd->value, "exit", 4))
 		;//
 	cmd_line = get_cmd_line(cmd->arg->value, cmd->arg->next);
 	if (!ft_strncmp(cmd->value, "export", 6))
 	{
-		if (ft_export(cmd_line, env_var, export_var) == -1)
+		if (ft_export(cmd_line, &data->env, &data->export_env) == -1)
 		{
 			free_tab(cmd_line);
-			exit(EXIT_FAILURE);
+			if (!no_pipe)
+				exit(EXIT_FAILURE);
+			else
+				return ;
 		}
 		free_tab(cmd_line);
-		exit(EXIT_SUCCESS);
+		if (!no_pipe)
+			exit(EXIT_SUCCESS);
 	}
 	if (!ft_strncmp(cmd, "unset", 5))
-		unset(env_var, export_var, cmd_line);
+		unset(&data->env, &data->export_env, cmd_line);
+	if (!no_pipe)
+		exit(EXIT_SUCCESS);
 }
 
 static char	**get_cmd_line(char *head, t_arg *arg)
@@ -145,7 +151,7 @@ static char	*get_cmd_name(char *s)
 	return (ft_substr(s, start, start - end));
 }
 
-void	execute(t_cmd *cmd, char ***env_var, char ***export_var)
+void	execute(t_cmd *cmd, t_data *data, int flag)
 {
 	char	*pathname;
 	char	*cmd_name;
@@ -155,7 +161,10 @@ void	execute(t_cmd *cmd, char ***env_var, char ***export_var)
 		return ;
 	ft_redir(cmd->redir);
 	if (is_builtin(cmd->value) == true)
-		exec_builtin(cmd, env_var, export_var);
+	{
+		exec_builtin(cmd, data, flag);
+		return ;
+	}
 	if (ft_strchr(cmd->value, '/'))
 	{
 		pathname = ft_strdup(cmd->value);
@@ -163,11 +172,11 @@ void	execute(t_cmd *cmd, char ***env_var, char ***export_var)
 	}
 	else
 	{
-		pathname = get_path(cmd->value, *env_var);
+		pathname = get_path(cmd->value, data->env);
 		cmd_name = ft_strdup(cmd->value);
 	}
 	cmd_line = get_cmd_line(cmd_name, cmd->arg);
-	if (execve(pathname, cmd_line, *env_var) == -1)
+	if (execve(pathname, cmd_line, data->env) == -1)
 	{
 		perror(cmd_name);
 		free(pathname);

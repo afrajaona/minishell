@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void	ft_wait(int pid[], int nb)
+void	ft_wait(int pid[], int nb, int *exit_status)
 {
 	int	status;
 	int	i;
@@ -11,7 +11,7 @@ void	ft_wait(int pid[], int nb)
 		if (waitpid(pid[i], &status, 0) == -1)
 			printf("wait failed\n");
 	}
-	exit(WEXITSTATUS(status));
+	*exit_status = WEXITSTATUS(status);
 }
 
 int	count_cmd(t_parse *line)
@@ -50,12 +50,12 @@ int	**init_pipes(int nb)
 	return (root);
 }
 
-void	exec_line(t_parse *line, int **pipelines, int branch_nb, char **env)
+void	exec_line(t_parse *line, int **pipelines, int branch_nb, t_data *data)
 {
 	int	pid[branch_nb];
 	int	nb;
 
-	nb = -1;
+	nb = 0;
 	while (nb < branch_nb)
 	{
 		if (!line)
@@ -77,36 +77,40 @@ void	exec_line(t_parse *line, int **pipelines, int branch_nb, char **env)
 			exit(EXIT_FAILURE);
 		}
 		if (!pid[nb])
-			execute((t_cmd *)line->cmd, env)
+			execute((t_cmd *)line->cmd, data, 0);
 		line = line->next;
 	}
-	ft_wait(pid, branch_nb);
+	ft_wait(pid, branch_nb, &data->status);
 }
 
-void	launch(t_parse *line, char **env)
+void	launch(t_parse *line, t_data *data)
 {
+	int	branch_nb;
 	int	pid;
 	int	status;
-	int	branch_nb;
 	int	**pipelines;
 
 	branch_nb = count_cmd(line);
-	pipelines = init_pipes(branch_nb - 1);
-	pid = fork();
-	if (pid == -1)
+	if (branch_nb == 1)
 	{
-		printf("launch failed\n");
+		if (is_builtin((t_cmd *)line->cmd)->value == true)
+			exec_builtin(cmd, data, 1);
+		else
+		{
+			pid = fork();
+			if (pid == -1)
+			{
+				ft_putstr_fd("minishell: launch failure\n", 2);
+				return ;
+			}
+			if (!pid)
+				execute((t_cmd *)line->cmd, data, 0);
+			else
+				waitpid(pid, &status, 0);
+			data->status = WEXITSTATUS(status);
+		}
 		return ;
 	}
-	if (!pid)
-		exec_line(line, pipelines, branch_nb, env);
-	else
-	{
-		wait(&status);
-		if (WIFEXITED(status))
-		{
-			if (WEXITSTATUS(status) == EXIT_RETVAL)
-				exit(EXIT_SUCCESS);
-		}
-	}
+	pipelines = init_pipes(branch_nb - 1);
+	exec_line(line, pipelines, branch_nb, data);
 }

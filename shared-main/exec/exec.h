@@ -29,5 +29,6 @@ void	error_msg(char *target, char *message, int path_on);
 void	ft_redir(t_redir *redir);
 void	free_tab(char **s);
 void	init(t_cmd	*cmd, char *value);
+void    update_data(t_data *data);
 
 #endif
