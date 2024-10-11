@@ -14,22 +14,7 @@
 
 void	update_data(t_data *data)
 {
-	int		fd;
-	int		bytes_read;
-	char	buffer[100];
-
-	fd = open("temp", O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: failed to update exit value\n", 2);
-		return ;
-	}
-	bytes_read = read(fd, buffer, sizeof(buffer));
-	if (bytes_read == -1)
-	{
-        ft_putstr_fd("minishell: failed to update exit value\n", 2);
-        return ;
-    }
-	data->status = buffer;
-	close(fd);
+	if (g_received_sigint)
+		data->status = g_received_sigint;
+	g_received_sigint = 0;
 }
