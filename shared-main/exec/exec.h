@@ -9,6 +9,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include "minishell.h"
 
 #define TOKEN_COMMAND			1
 #define TOKEN_ARGUMENT			2
