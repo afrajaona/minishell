@@ -10,16 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "minishell.h"
 
 void	ft_data_init(t_data *data, int status, char **env)
 {
-	data->env = env;
-	data->status = ft_itoa(status);
+	data->env = ft_tab_dup(env);
+	data->export_env = ft_tab_dup(env);
+	data->status = status;
 }
 
 void	ft_free_data(t_data *data)
 {
-	free(data->status);
-	data->status = NULL;
+	free_tab(data->env);
+	free_tab(data->export_env);
+	data->env = NULL;
+	data->export_env = NULL;
 }

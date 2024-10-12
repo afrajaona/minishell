@@ -6,15 +6,18 @@
 /*   By: hrazafia <hrazafia@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 11:16:55 by hrazafia          #+#    #+#             */
-/*   Updated: 2024/09/27 09:44:33 by hrazafia         ###   ########.fr       */
+/*   Updated: 2024/10/12 15:40:11 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 #include "parse.h"
 #include "token.h"
+#include "exec.h"
 
 #define PROMPT "tests> "
+
+volatile sig_atomic_t	g_received_sigint = 0;
 
 void	ft_print_lst(t_list *lst)
 {
@@ -610,16 +613,19 @@ int	main(int argc, char **argv, char **env)
 
 	(void) argc;
 	(void) argv;
+	handle_signals();
 	ft_data_init(&data, 0, env);
 	line = ft_readline(PROMPT);
 	while (line != NULL)
 	{
+		update_data(&data);
 		if (ft_isempty(line))
 			free(line);
 		else
 		{
 			ft_parse(&data, &cmds, line);
-			ft_print_parse(cmds);
+			launch(cmds, &data);
+			//ft_print_parse(cmds);
 			//ft_print_parse2(cmds);
 			free(line);
 		}

@@ -56,8 +56,9 @@ typedef struct s_token
 
 typedef struct s_data
 {
-	char	*status;
+	int	status;
 	char	**env;
+	char	**export_env;
 }				t_data;
 
 void	ft_add_content(t_list **lst, void *content);

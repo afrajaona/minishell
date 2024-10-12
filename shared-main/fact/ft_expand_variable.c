@@ -68,7 +68,7 @@ static void	ft_add_varvalue(t_data *data, t_list **str, char *name, size_t *i)
 		return ;
 	var_len = ft_strlen(name);
 	if ((name[0] == '?') && (ft_strlen("?") == var_len))
-		var_value = data->status;
+		var_value = ft_itoa(data->status);
 	else
 		var_value = ft_get_varvalue(name, var_len, data->env);
 	j = 0;
