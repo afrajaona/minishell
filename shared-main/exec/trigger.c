@@ -1,4 +1,16 @@
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   trigger.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arajaona <arajaona@student.42antanana      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/12 15:47:00 by arajaona          #+#    #+#             */
+/*   Updated: 2024/10/12 15:47:21 by arajaona         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "exec.h"
 
 void	ft_wait(int pid[], int nb, int *exit_status)
 {
@@ -61,15 +73,15 @@ void	exec_line(t_parse *line, int **pipelines, int branch_nb, t_data *data)
 		if (!line)
 			break;
 		if (line->type == TOKEN_PIPE)
-		}
+		{
 			line = line->next;
 			continue;
 		}
 		nb++;
 		if (line->prev)
-			dup2(pipeline[nb - 1][0], 0);
+			dup2(pipelines[nb - 1][0], 0);
 		if (line->next)
-			dup2(pipeline[nb][1], 1);
+			dup2(pipelines[nb][1], 1);
 		pid[nb] = fork();
 		if (pid[nb] == -1)
 		{
@@ -77,7 +89,7 @@ void	exec_line(t_parse *line, int **pipelines, int branch_nb, t_data *data)
 			exit(EXIT_FAILURE);
 		}
 		if (!pid[nb])
-			execute((t_cmd *)line->cmd, data, 0);
+			execute(line->data.cmd, data, 0);
 		line = line->next;
 	}
 	ft_wait(pid, branch_nb, &data->status);
@@ -93,8 +105,8 @@ void	launch(t_parse *line, t_data *data)
 	branch_nb = count_cmd(line);
 	if (branch_nb == 1)
 	{
-		if (is_builtin((t_cmd *)line->cmd)->value == true)
-			exec_builtin(cmd, data, 1);
+		if (is_builtin(line->data.cmd->value) == true)
+			exec_builtin(line->data.cmd, data, 1);
 		else
 		{
 			pid = fork();
@@ -104,7 +116,7 @@ void	launch(t_parse *line, t_data *data)
 				return ;
 			}
 			if (!pid)
-				execute((t_cmd *)line->cmd, data, 0);
+				execute(line->data.cmd, data, 0);
 			else
 				waitpid(pid, &status, 0);
 			data->status = WEXITSTATUS(status);

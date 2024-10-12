@@ -19,10 +19,10 @@ t_bool	is_builtin(char	*cmd)
 			||(!ft_strncmp(cmd, "export", 6) && ft_strlen(cmd) == 6)
 			||(!ft_strncmp(cmd, "env", 3) && ft_strlen(cmd) == 3)
 			||(!ft_strncmp(cmd, "unset", 5) && ft_strlen(cmd) == 5)
-			||(!ft_strncmp(cmd, "exit", 4) && ft_strlen(cmd) == 4))
+			||(!ft_strncmp(cmd, "exit", 4) && ft_strlen(cmd) == 4));
 }
 
-int	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
+void	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
 {
 	char	**cmd_line;
 
@@ -33,7 +33,7 @@ int	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
 	if (!ft_strncmp(cmd->value, "env", 3))
 		env(data->env);
 	if (!ft_strncmp(cmd->value, "exit", 4))
-		;//
+		ft_exit(data, cmd);
 	cmd_line = get_cmd_line(cmd->arg->value, cmd->arg->next);
 	if (!ft_strncmp(cmd->value, "export", 6))
 	{
@@ -49,13 +49,13 @@ int	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
 		if (!no_pipe)
 			exit(EXIT_SUCCESS);
 	}
-	if (!ft_strncmp(cmd, "unset", 5))
+	if (!ft_strncmp(cmd->value, "unset", 5))
 		unset(&data->env, &data->export_env, cmd_line);
 	if (!no_pipe)
 		exit(EXIT_SUCCESS);
 }
 
-static char	**get_cmd_line(char *head, t_arg *arg)
+char	**get_cmd_line(char *head, t_arg *arg)
 {
 	t_arg	*temp;
 	int		len;
@@ -188,29 +188,5 @@ void	execute(t_cmd *cmd, t_data *data, int flag)
 			exit(127);
 		else
 			exit(EXIT_FAILURE);
-	}
-}
-
-int	main(int ac, char **av, char **env)
-{
-	pid_t	pid;
-	t_cmd	cmd;
-	int		status;
-
-	if (ac < 2)
-		return (0);
-	//init(&cmd, av[1]);
-	pid = fork();
-	if (pid == -1)
-	{
-		printf("fork failed\n");
-		exit(1);
-	}
-	if (!pid)
-		execute(&cmd, env);
-	else
-	{
-		wait(&status);
-		exit(WEXITSTATUS(status));
 	}
 }

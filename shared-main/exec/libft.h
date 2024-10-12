@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hrazafia <hrazafia@student.42antanana      +#+  +:+       +#+        */
+/*   By: hrazafia <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 10:40:53 by hrazafia          #+#    #+#             */
-/*   Updated: 2024/09/09 22:32:44 by hrazafia         ###   ########.fr       */
+/*   Updated: 2024/04/26 09:20:02 by hrazafia         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LIBFT_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE	1
+#  define BUFFER_SIZE 1
 # endif
 
 # include <unistd.h>
@@ -23,11 +23,11 @@
 # include <stddef.h>
 # include <stdarg.h>
 
-# define ADDR_PRE		"0x"
-# define NULL_STR		"(null)"
-# define NULL_PTR		"(nil)"
+# define ADDR_PRE "0x"
+# define NULL_STR "(null)"
+# define NULL_PTR "(nil)"
 
-# define N				1
+# define N 1
 
 typedef int	(*t_func)(va_list *);
 
@@ -36,13 +36,13 @@ typedef struct s_content
 	char				*value;
 	size_t				len;
 	struct s_content	*next;
-}				t_content;
+}	t_content;
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}				t_list;
+}	t_list;
 
 size_t		ft_strlen(const char *s);
 int			ft_isalpha(int c);
@@ -58,6 +58,8 @@ char		*ft_strdup(const char *s);
 int			ft_isdigit(int c);
 int			ft_isalnum(int c);
 int			ft_isascii(int c);
+int			ft_isspace(char c);
+int			ft_isempty(char *s);
 int			ft_isprint(int c);
 int			ft_toupper(int c);
 int			ft_tolower(int c);
@@ -122,8 +124,5 @@ t_content	*ft_content_new(char *s, size_t len);
 t_content	*ft_content_sub(t_content *content, size_t start);
 size_t		ft_content_len(t_content *content);
 void		ft_content_clear(t_content **content);
-
-int			ft_isspace(char c);
-int			ft_isempty(char *s);
 
 #endif
