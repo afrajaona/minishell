@@ -14,10 +14,11 @@
 
 void	pwd(void)
 {
-	char	where[1024];
+	char	*location;
 
-	if (getcwd(where, sizeof(where)))
-		printf("%s\n", where);
-	else
+	location = getcwd(NULL, 0);
+	if (!location)
 		perror("pwd");
+	else
+		printf("%s\n", location);
 }

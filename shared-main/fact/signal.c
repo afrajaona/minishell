@@ -19,8 +19,7 @@ void	signal_handler(int sig)
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 1);
-		rl_redisplay();
-		g_received_sigint = 136;
+		g_received_sigint = 130;
 	}
 }
 

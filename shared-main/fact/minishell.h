@@ -35,6 +35,7 @@ char    **ft_tab_dup(char **tab);
 int		ft_export(char	**input, char ***env_var, char ***export_var);
 size_t	ft_atoll(const char *nptr);
 t_bool	is_builtin(char	*cmd);
+//t_bool	ft_isspace(char c);
 void	cd(t_cmd *cmd, t_data *data);
 void	env(char *envp[]);
 void	execute(t_cmd *cmd, t_data *data, int flag);

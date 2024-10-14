@@ -12,6 +12,22 @@
 
 #include "exec.h"
 
+void	close_unused_pipes(int	**pipelines, int index, int size)
+{
+	int	i;
+	
+	i = 0;
+	while (i < size)
+	{
+		if (i != index - 1 && i != index)
+		{
+			close(pipelines[i][0]);
+			close(pipelines[i][1]);
+		}
+		i++;
+	}
+}
+
 void	ft_wait(int pid[], int nb, int *exit_status)
 {
 	int	status;
@@ -21,7 +37,7 @@ void	ft_wait(int pid[], int nb, int *exit_status)
 	while (++i < nb)
 	{
 		if (waitpid(pid[i], &status, 0) == -1)
-			printf("wait failed\n");
+			printf("wait failed at pipe number %i\n", i);
 	}
 	*exit_status = WEXITSTATUS(status);
 }
@@ -29,17 +45,19 @@ void	ft_wait(int pid[], int nb, int *exit_status)
 int	count_cmd(t_parse *line)
 {
 	int	i;
+	t_parse	*tmp;
 
 	i = 0;
-	while (line)
+	tmp = line;
+	while (tmp)
 	{
-		if (line->type == TOKEN_PIPE)
+		if (tmp->type == TOKEN_PIPE)
 		{
-			line = line->next;
+			tmp = tmp->next;
 			continue;
 		}
 		i++;
-		line = line->next;
+		tmp = tmp->next;
 	}
 	return (i);
 }
@@ -66,8 +84,8 @@ void	exec_line(t_parse *line, int **pipelines, int branch_nb, t_data *data)
 {
 	int	pid[branch_nb];
 	int	nb;
-
-	nb = 0;
+	
+	nb = -1;
 	while (nb < branch_nb)
 	{
 		if (!line)
@@ -78,19 +96,40 @@ void	exec_line(t_parse *line, int **pipelines, int branch_nb, t_data *data)
 			continue;
 		}
 		nb++;
-		if (line->prev)
-			dup2(pipelines[nb - 1][0], 0);
-		if (line->next)
-			dup2(pipelines[nb][1], 1);
 		pid[nb] = fork();
 		if (pid[nb] == -1)
 		{
-			printf("fork failed\n");
+			ft_putstr_fd("fork failed\n", 2);
 			exit(EXIT_FAILURE);
 		}
 		if (!pid[nb])
+		{
+			close_unused_pipes(pipelines, nb, branch_nb - 1);
+			if (line->prev && pipelines[nb - 1])
+			{
+				close(pipelines[nb - 1][1]);
+				if (dup2(pipelines[nb - 1][0], 0) == -1)
+					ft_putendl_fd("stdin has not been redirected!", 2);
+				close(pipelines[nb - 1][0]);
+			}
+			if (line->next && pipelines[nb])
+			{
+				close(pipelines[nb][0]);
+				if (dup2(pipelines[nb][1], 1) == -1)
+					ft_putendl_fd("stdout has not been redirected!", 2);
+				close(pipelines[nb][1]);
+			}
 			execute(line->data.cmd, data, 0);
+		}
 		line = line->next;
+	}
+	for (int i = 0; i < branch_nb - 1; i++)
+	{
+		if (pipelines[i])
+		{
+			close(pipelines[i][0]);
+			close(pipelines[i][1]);
+		}
 	}
 	ft_wait(pid, branch_nb, &data->status);
 }
@@ -102,6 +141,7 @@ void	launch(t_parse *line, t_data *data)
 	int	status;
 	int	**pipelines;
 
+	handle_signals();
 	branch_nb = count_cmd(line);
 	if (branch_nb == 1)
 	{

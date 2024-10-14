@@ -16,6 +16,8 @@ void	free_tab(char **s)
 {
 	int	i;
 
+	if (!s)
+		return ;
 	i = -1;
 	while (s[++i])
 		free(s[i]);

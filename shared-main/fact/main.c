@@ -15,9 +15,32 @@
 #include "token.h"
 #include "exec.h"
 
+
 #define PROMPT "tests> "
 
 volatile sig_atomic_t	g_received_sigint = 0;
+
+/*t_bool	ft_isspace(char c)
+{
+	if ((c == ' ') || (c == '\f') || (c == '\n')
+		|| (c == '\r') || (c == '\t') || (c == '\v'))
+		return (true);
+	else
+		return (false);
+}
+
+t_bool	ft_isempty(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(s[i]) && (s[i] != '\0'))
+		i++;
+	if (s[i] == '\0')
+		return (true);
+	else
+		return (false);
+}*/
 
 void	ft_print_lst(t_list *lst)
 {
@@ -625,8 +648,8 @@ int	main(int argc, char **argv, char **env)
 		{
 			ft_parse(&data, &cmds, line);
 			launch(cmds, &data);
-			//ft_print_parse(cmds);
-			//ft_print_parse2(cmds);
+			ft_print_parse(cmds);
+			ft_print_parse2(cmds);
 			free(line);
 		}
 		line = ft_readline(PROMPT);

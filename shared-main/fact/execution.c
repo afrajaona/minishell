@@ -28,14 +28,17 @@ void	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
 
 	if (!ft_strncmp(cmd->value, "cd", 2))
 		cd(cmd, data);
-	if (!ft_strncmp(cmd->value, "pwd", 3))
+	else if (!ft_strncmp(cmd->value, "pwd", 3))
 		pwd();
-	if (!ft_strncmp(cmd->value, "env", 3))
+	else if (!ft_strncmp(cmd->value, "env", 3))
 		env(data->env);
-	if (!ft_strncmp(cmd->value, "exit", 4))
+	else if (!ft_strncmp(cmd->value, "exit", 4))
 		ft_exit(data, cmd);
-	cmd_line = get_cmd_line(cmd->arg->value, cmd->arg->next);
-	if (!ft_strncmp(cmd->value, "export", 6))
+	if (cmd->arg == NULL)
+		cmd_line = NULL;
+	else
+		cmd_line = get_cmd_line(cmd->arg->value, cmd->arg->next);
+	if (ft_strlen(cmd->value) == 6 && !ft_strncmp(cmd->value, "export", 6))
 	{
 		if (ft_export(cmd_line, &data->env, &data->export_env) == -1)
 		{
@@ -48,8 +51,9 @@ void	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe)
 		free_tab(cmd_line);
 		if (!no_pipe)
 			exit(EXIT_SUCCESS);
+		return ;
 	}
-	if (!ft_strncmp(cmd->value, "unset", 5))
+	if (ft_strlen(cmd->value) == 5 && !ft_strncmp(cmd->value, "unset", 5))
 		unset(&data->env, &data->export_env, cmd_line);
 	if (!no_pipe)
 		exit(EXIT_SUCCESS);
@@ -62,8 +66,6 @@ char	**get_cmd_line(char *head, t_arg *arg)
 	int		i;
 	char	**tab;
 
-	if (arg == NULL)
-		return (NULL);
 	temp = arg;
 	len = 0;
 	while (temp)
@@ -71,15 +73,19 @@ char	**get_cmd_line(char *head, t_arg *arg)
 		len++;
 		temp = temp->next;
 	}
-	tab = ft_calloc(sizeof(char *), len + 1);
+	tab = ft_calloc(sizeof(char *), len + 2);
 	if (!tab)
-		return (NULL);
-	i = 0;
-	tab[0] = head;
-	while (++i < len)
 	{
-		tab[i] = arg->value;
-		arg = arg->next;
+		ft_putendl_fd("failed to allocate memory for cmd_line", 2);
+		return (NULL);
+	}
+	i = 0;
+	temp = arg;
+	tab[0] = head;
+	while (++i < len + 1)
+	{
+		tab[i] = temp->value;
+		temp = temp->next;
 	}
 	return (tab);
 }
@@ -189,4 +195,5 @@ void	execute(t_cmd *cmd, t_data *data, int flag)
 		else
 			exit(EXIT_FAILURE);
 	}
+	exit(EXIT_SUCCESS);
 }

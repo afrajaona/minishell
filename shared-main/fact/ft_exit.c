@@ -58,7 +58,7 @@ void	exit_syntax_error(char *s)
 
 	tmp = dup(1);
 	dup2(2, 1);
-	printf("minishell: exit: %s: numeric argument required", s);
+	printf("minishell: exit: %s: numeric argument required\n", s);
 	dup2(tmp, 1);
 	exit(2);
 }
@@ -80,6 +80,6 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 	}
 	if (invalid_arg(cmd->arg->value))
 		exit_syntax_error(cmd->arg->value);
-	exit_val = ft_atoll(cmd->arg->value);
+	exit_val = ft_atoll(cmd->arg->value) % 256;
 	exit(exit_val);
 }

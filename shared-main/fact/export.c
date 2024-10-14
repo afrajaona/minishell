@@ -112,7 +112,7 @@ int	ft_insert_var(char **input, char ***envp)
 
 int	ft_export(char **input, char ***envp, char ***ex_var)
 {
-	if (!*input)
+	if (!input || !*input)
 		return (sort_print(*ex_var), 0);
 	if (handle_export_error(input) == -1)
 		return (1);

@@ -27,6 +27,7 @@
 
 void	error_msg(char *target, char *message, int path_on);
 void	exec_builtin(t_cmd *cmd, t_data *data, int no_pipe);
+char	**get_cmd_line(char *head, t_arg *arg);
 void	ft_redir(t_redir *redir);
 void	free_tab(char **s);
 void	init(t_cmd	*cmd, char *value);
