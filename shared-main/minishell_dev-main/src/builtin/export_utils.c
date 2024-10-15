@@ -12,16 +12,16 @@
 
 #include "minishell.h"
 
-int	handle_export_error(char **input, int index)
+int	handle_export_error(char **input, int index, int retval)
 {
 	if (!ft_isalpha((*input)[0]))
 	{
 		printf("minishell: export : `%s': not a valid identifier\n", *input);
-		return (-1);
+		retval = -1;
 	}
 	if (input[++index])
-		return (handle_export_error(&input[index]));
-	return (0);
+		return (handle_export_error(&input[index]), retval);
+	return (retval);
 }
 
 static int	create_env_var(char ***envp, char *input)

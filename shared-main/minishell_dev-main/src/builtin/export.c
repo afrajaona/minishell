@@ -19,7 +19,7 @@ int	ft_export(t_data *data, t_cmd *cmd)
 	input = get_cmd_line(cmd->arg->value, cmd->arg->next);
 	if (!input || !*input)
 		return (sort_print(data->ex_var), 0);
-	if (handle_export_error(input, 0))
+	if (handle_export_error(input, 0, 0))
 		return (ft_clear_tab(cmd_line), 1);
 	while (*input)
 	{

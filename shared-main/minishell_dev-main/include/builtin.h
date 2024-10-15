@@ -25,7 +25,7 @@ int	ft_exec_builtin(t_data *data, t_cmd *cmd, int in_pipe);
 int	ft_exit(t_data *data, t_cmd *cmd);
 int	ft_export(t_data *data, t_cmd *cmd);
 int	ft_insert_var(char **input, char ***envp);
-int	handle_export_error(char **input, int index);
+int	handle_export_error(char **input, int index, int retval);
 int	pwd(void);
 int	unset(t_data *data, t_cmd *cmd);
 size_t	ft_atoll(const char *nptr);
