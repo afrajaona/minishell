@@ -22,8 +22,19 @@ INCS =	lexer.h \
 		debug.h
 
 SRCS =	minishell.c \
-		builtin/ft_exec_builtin.c \
+		builtin/cd.c \
+		builtin/export.c \
+		builtin/export_utils.c \
+		builtin/ft_atoll.c \
 		builtin/ft_builtin_utils.c \
+		builtin/ft_display_tab.c \
+		builtin/ft_echo.c \
+		builtin/ft_exec_builtin.c \
+		builtin/ft_exit.c \
+		builtin/ft_getenv.c \
+		builtin/pwd.c \
+		builtin/sort_print.c \
+		builtin/unset.c \
 		exec/ft_create_pipes.c \
 		exec/ft_exec_cmd.c \
 		exec/ft_exec_line.c \
