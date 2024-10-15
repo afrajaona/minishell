@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-int	handle_export_error(char **input)
+int	handle_export_error(char **input, int index)
 {
 	if (!ft_isalpha((*input)[0]))
 	{
 		printf("minishell: export : `%s': not a valid identifier\n", *input);
 		return (-1);
 	}
-	if (input[1])
-		return (handle_export_error(&input[1]));
+	if (input[++index])
+		return (handle_export_error(&input[index]));
 	return (0);
 }
 
