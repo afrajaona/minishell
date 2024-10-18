@@ -84,6 +84,7 @@ SRCS =	minishell.c \
 		utils/ft_tab_dup.c \
 		utils/ft_to_str_utils.c \
 		utils/ft_to_tab.c \
+		utils/ft_clear_cmd.c \
 		debug/ft_print_expand.c \
 		debug/ft_print_parse.c \
 		debug/ft_print_utils.c \

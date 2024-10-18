@@ -45,15 +45,21 @@ char	**get_cmd_line(char *head, t_arg *arg)
 
 t_bool	ft_is_builtin(t_data *data, t_cmd *cmd)
 {
-	if (value == NULL)
+	char	*next;
+	
+	if (cmd->value == NULL)
 		return (false);
-	if (ft_check_builtin("export", cmd->value, cmd->arg->value, data)
-		|| ft_check_builtin("echo", cmd->value, cmd->arg->value, data)
-		|| ft_check_builtin("cd", cmd->value, cmd->arg->value, data)
-		|| ft_check_builtin("pwd", cmd->value, cmd->arg->value, data)
-		|| ft_check_builtin("unset", cmd->value, cmd->arg->value, data)
-		|| ft_check_builtin("env", cmd->value, cmd->arg->value, data)
-		|| ft_check_builtin("exit", cmd->value, cmd->arg->value, data))
+	if (cmd->arg)
+		next = cmd->arg->value;
+	else
+		next = NULL;
+	if (ft_check_builtin("export", cmd->value, next, data)
+		|| ft_check_builtin("echo", cmd->value, next, data)
+		|| ft_check_builtin("cd", cmd->value, next, data)
+		|| ft_check_builtin("pwd", cmd->value, next, data)
+		|| ft_check_builtin("unset", cmd->value, next, data)
+		|| ft_check_builtin("env", cmd->value, next, data)
+		|| ft_check_builtin("exit", cmd->value, next, data))
 		return (true);
 	else
 		return (false);
@@ -62,7 +68,7 @@ t_bool	ft_is_builtin(t_data *data, t_cmd *cmd)
 t_bool	ft_check_builtin(char *builtin, char *value, char *next, t_data *data)
 {
 	size_t	len;
-
+	(void)data;//
 	len = ft_strlen(builtin);
 	if ((ft_strncmp(builtin, value, len) == 0)
 		&& (len == ft_strlen(value)))

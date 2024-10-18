@@ -12,39 +12,51 @@
 
 #include "minishell.h"
 
+static t_cmd	*tmp_cmd(char *object, char *value)
+{
+	t_cmd	*ret;
+	
+	ret = ft_calloc(sizeof(t_cmd), 1);
+	ret->pid = 0;
+	ret->value = NULL;
+	ret->redir = NULL;
+	ret->arg = ft_calloc(sizeof(t_arg), 1);
+	ret->arg->value =  ft_strjoin(object, value);
+	ret->arg->next = NULL;
+	return (ret);
+}
+
 static int	update_pwd(t_data *data)
 {
 	char    location[1024];
-    char    **tmp;
+	t_cmd	*cmd;
 
-    if (ft_getenv("PWD", data->env))
-    {
-        if (getcwd(location, sizeof(location)))
-        {
-            tmp = ft_calloc(sizeof(char *), 2);
-            tmp[0] = ft_strjoin("PWD=", location);
-            ft_export(tmp, &data->env, &data->ex_var);
-            free_tab(tmp);
-        }
-        else
-            return (ft_putendl_fd("minishell: cd: PWD not updated", 2), 0);
-    }
-    return (1);
+	if (ft_getenv("PWD", data->env))
+	{
+		if (getcwd(location, sizeof(location)))
+		{
+			cmd = tmp_cmd("PWD=", location);
+			ft_export(data, cmd);
+			ft_clear_cmd(cmd);
+		}
+		else
+			return (ft_putendl_fd("minishell: cd: PWD not updated", 2), 0);
+	}
+	return (1);
 }
 
 static int	update_oldpwd(t_data *data)
 {
 	char	location[1024];
-	char	**tmp;
+	t_cmd	*cmd;
 
 	if (ft_getenv("OLDPWD", data->env))
 	{
 		if (getcwd(location, sizeof(location)))
 		{
-			tmp = ft_calloc(sizeof(char *), 2);
-			tmp[0] = ft_strjoin("OLDPWD=", location);
-			ft_export(tmp, &data->env, &data->ex_var);
-			free_tab(tmp);
+			cmd = tmp_cmd("OLDPWD=", location);
+			ft_export(data, cmd);
+			ft_clear_cmd(cmd);
 		}
 		else
 			return (ft_putendl_fd("minishell: cd: OLDPWD not updated", 2), 0);
@@ -52,9 +64,9 @@ static int	update_oldpwd(t_data *data)
 	return (1);
 }
 
-static int	got_to_home(t_data *data)
+static int	go_to_home(t_data *data)
 {
-	char	home_dir;
+	char	*home_dir;
 
 	home_dir = ft_getenv("HOME", data->env);
 	if (!home_dir)
@@ -64,7 +76,7 @@ static int	got_to_home(t_data *data)
 	}
 	if (chdir(home_dir))
 	{
-		perror("minishell: cd: ")
+		perror("minishell: cd: ");
 		return (1);
 	}
 	return (0);
@@ -74,7 +86,6 @@ int	cd(t_data *data, t_cmd *cmd)
 {
 	t_arg	*tmp;
 	int		i;
-	int		tmp_fd;
 
 	tmp = cmd->arg;
 	if (!tmp)

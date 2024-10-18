@@ -37,7 +37,7 @@ void	print_export_format(char **s)
 		{
 			tmp = ft_substr(s[i], 0, j + 1);
 			printf("declare -x %s\"%s\"\n", tmp, &s[i][j + 1]);
-			free (tmp);
+			free(tmp);
 		}
 		else
 			printf("declare -x %s\n", s[i]);
@@ -64,5 +64,5 @@ void	sort_print(char **tab)
 		i++;
 	}
 	print_export_format(tmp);
-	free_tab(tmp);
+	ft_clear_tab(tmp);
 }

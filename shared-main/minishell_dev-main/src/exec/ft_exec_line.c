@@ -41,7 +41,7 @@ static int	ft_exec_parse(t_data *data, t_parse *parse)
 		else
 		{
 			if (ft_is_builtin(data, parse->data.cmd))
-				ft_exec_builtin(data, parse->data.cmd, 1);
+				exit(ft_exec_builtin(data, parse->data.cmd));
 			else
 				ft_exec_cmds(data, parse);
 			parse = parse->next;
@@ -61,7 +61,7 @@ static void	ft_exec_cmds(t_data *data, t_parse *parse)
 	cmd = parse->data.cmd;
 	if (ft_is_builtin(data, parse->data.cmd) && (parse->prev == NULL)
 		&& (parse->next == NULL))
-		data->exit.value = ft_exec_builtin(data, parse->data.cmd, 0);
+		data->exit.value = ft_exec_builtin(data, parse->data.cmd);
 	else
 		ft_exec_cmd(data, parse);
 }

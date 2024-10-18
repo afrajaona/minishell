@@ -26,7 +26,10 @@ void	ft_expand_token(t_data *data, t_token *token)
 	while (token != NULL)
 	{
 		if ((token->type == TOKEN_COMMAND)
-			&& ft_check_builtin("export", token->value))
+			&& ((token->next &&
+			ft_check_builtin("export", token->value, token->next->value, data))
+			|| (!token->next &&
+			ft_check_builtin("export", token->value, NULL, data))))
 		{
 			value = ft_strdup(token->value);
 			token->expand = ft_new_expand(TOKEN_COMMAND, value);

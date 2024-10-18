@@ -166,6 +166,7 @@ typedef struct s_data
 void	ft_add_content(t_list **lst, void *content);
 char	*ft_lst_to_tab(t_list *lst);
 char	*ft_to_str(t_list *lst);
+void    ft_clear_cmd(t_cmd *cmd);
 void	ft_clear_list(t_list **lst);
 void	ft_clear_temp_list(t_list **lst);
 void	ft_init_data(t_data *data, int ac, char **av, char **env);

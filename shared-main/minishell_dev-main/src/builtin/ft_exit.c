@@ -72,7 +72,7 @@ int	ft_exit(t_data *data, t_cmd *cmd)
 
 	arg_count = count_args(cmd);
 	if (!arg_count)
-		exit(data->exit.status);
+		exit(data->exit.value);
 	if (arg_count > 1)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
