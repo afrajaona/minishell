@@ -22,7 +22,7 @@ void	ft_clear_tab(char **tab)
 		free(tab[i]);
 		i++;
 	}
-	free(tab);
+	tab = NULL;
 }
 
 char	**ft_tab_dup(char **tab)
