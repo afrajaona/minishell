@@ -6,7 +6,7 @@
 /*   By: arajaona <arajaona@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 15:38:05 by arajaona          #+#    #+#             */
-/*   Updated: 2024/10/15 15:48:55 by arajaona         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:29:46 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_echo(t_cmd *cmd)
 {
 	char	**args;
-	
+
 	if (cmd->arg)
 		args = get_cmd_line(cmd->arg->value, cmd->arg->next);
 	else

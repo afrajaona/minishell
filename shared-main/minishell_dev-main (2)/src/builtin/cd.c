@@ -6,7 +6,7 @@
 /*   By: arajaona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/10 13:57:23 by arajaona          #+#    #+#             */
-/*   Updated: 2024/10/15 15:14:46 by arajaona         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:23:09 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,20 @@
 static t_cmd	*tmp_cmd(char *object, char *value)
 {
 	t_cmd	*ret;
-	
+
 	ret = ft_calloc(sizeof(t_cmd), 1);
 	ret->pid = 0;
 	ret->value = NULL;
 	ret->redir = NULL;
 	ret->arg = ft_calloc(sizeof(t_arg), 1);
-	ret->arg->value =  ft_strjoin(object, value);
+	ret->arg->value = ft_strjoin(object, value);
 	ret->arg->next = NULL;
 	return (ret);
 }
 
 static int	update_pwd(t_data *data)
 {
-	char    location[1024];
+	char	location[1024];
 	t_cmd	*cmd;
 
 	if (ft_getenv("PWD", data->env))
@@ -97,7 +97,7 @@ int	cd(t_data *data, t_cmd *cmd)
 		i++;
 	}
 	if (i > 1)
-		return(ft_putendl_fd("minishell: cd: too many arguments", 2), 1);
+		return (ft_putendl_fd("minishell: cd: too many arguments", 2), 1);
 	if (!update_oldpwd(data))
 		return (1);
 	if (chdir(cmd->arg->value))

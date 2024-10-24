@@ -6,7 +6,7 @@
 /*   By: hrazafia <hrazafia@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 23:27:05 by hrazafia          #+#    #+#             */
-/*   Updated: 2024/10/10 01:06:38 by hrazafia         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:50:01 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_clear_tab(char **tab)
 		free(tab[i]);
 		i++;
 	}
-	tab = NULL;
+	free(tab);
 }
 
 char	**ft_tab_dup(char **tab)

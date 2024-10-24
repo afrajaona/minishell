@@ -6,7 +6,7 @@
 /*   By: arajaona <arajaona@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 15:55:46 by arajaona          #+#    #+#             */
-/*   Updated: 2024/10/18 14:41:56 by arajaona         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:41:52 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_export_error(char *input)
 			break ;
 		if (!(ft_isalnum(input[i]) || ft_strchr("_\\", input[i]))
 			|| !(ft_isalpha(input[0])
-			|| ft_strchr("_\\", input[0])))
+				|| ft_strchr("_\\", input[0])))
 		{
 			printf("minishell: export : `%s': not a valid identifier\n", input);
 			dup2(tmp_fd, 1);
@@ -53,11 +53,9 @@ static int	create_env_var(char ***envp, char *input)
 	while ((*envp)[++i])
 	{
 		new_envp[i] = ft_strdup((*envp)[i]);
-		if(!new_envp[i])
+		if (!new_envp[i])
 		{
-			while (--i >= 0)
-				free(new_envp[i]);
-			free(new_envp);
+			ft_clear_tab(new_envp);
 			return (-1);
 		}
 	}
@@ -76,7 +74,9 @@ static int	overwrite_env_var(char **environ, char *input)
 		i++;
 	while (*environ)
 	{
-		if (!ft_strncmp(input, *environ, i) && ((*environ)[i] == '=' || !(*environ)[i]))		{
+		if (!ft_strncmp(input, *environ, i) && ((*environ)[i] == '='
+			|| !(*environ)[i]))
+		{
 			free(*environ);
 			*environ = ft_strdup(input);
 			if (!*environ)
@@ -94,8 +94,8 @@ static int	var_exists(char *name, char **environ)
 	len_name = ft_strlen(name);
 	while (*environ)
 	{
-		if (!ft_strncmp(name, *environ, len_name) &&
-		((*environ)[len_name] == '=' || !(*environ)[len_name]))
+		if (!ft_strncmp(name, *environ, len_name)
+			&& ((*environ)[len_name] == '=' || !(*environ)[len_name]))
 			return (1);
 		environ++;
 	}
@@ -104,10 +104,10 @@ static int	var_exists(char *name, char **environ)
 
 int	ft_insert_var(char **input, char ***envp)
 {
-	int	exit_status;
+	int		exit_status;
 	char	**cmd_line;
 	char	**environ;
-	
+
 	cmd_line = ft_split(*input, '=');
 	environ = *envp;
 	if (var_exists(cmd_line[0], environ))

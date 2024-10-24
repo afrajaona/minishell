@@ -6,13 +6,13 @@
 /*   By: arajaona <arajaona@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 13:33:11 by arajaona          #+#    #+#             */
-/*   Updated: 2024/10/12 13:35:59 by arajaona         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:24:52 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t ft_atoll(const char *nptr)
+size_t	ft_atoll(const char *nptr)
 {
 	size_t		i;
 	size_t		sigle;

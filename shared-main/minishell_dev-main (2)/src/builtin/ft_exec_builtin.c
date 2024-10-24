@@ -6,7 +6,7 @@
 /*   By: hrazafia <hrazafia@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 11:24:12 by hrazafia          #+#    #+#             */
-/*   Updated: 2024/10/10 01:00:41 by hrazafia         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:30:35 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_exec_builtin(t_data *data, t_cmd *cmd, int no_pipe)
 {
-	int	retval;
+	int		retval;
 	char	*arg_value;
-	
+
 	if (cmd->arg)
 		arg_value = cmd->arg->value;
 	else

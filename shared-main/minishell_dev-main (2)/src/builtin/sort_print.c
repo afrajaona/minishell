@@ -6,7 +6,7 @@
 /*   By: arajaona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 11:25:18 by arajaona          #+#    #+#             */
-/*   Updated: 2024/07/11 11:50:09 by arajaona         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:34:35 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ void	ft_swap(char **s1, char **s2)
 
 void	print_export_format(char **s)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*tmp;
-	
+
 	i = -1;
 	while (s[++i])
 	{

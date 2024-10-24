@@ -6,7 +6,7 @@
 /*   By: arajaona <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 12:30:44 by arajaona          #+#    #+#             */
-/*   Updated: 2024/08/12 14:24:04 by arajaona         ###   ########.fr       */
+/*   Updated: 2024/10/24 13:35:43 by arajaona         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static size_t	ft_varlen(char *var)
 {
 	size_t	i;
 
-	i = 0;	
+	i = 0;
 	while (var[i] && var[i] != '=')
 		i++;
 	return (i);
@@ -24,9 +24,9 @@ static size_t	ft_varlen(char *var)
 
 static void	delete_var(char	***tab, char *input)
 {
-	int	i;
+	int		i;
 	size_t	len;
-	
+
 	i = 0;
 	while ((*tab)[i] && ft_strncmp((*tab)[i], input, ft_strlen(input)))
 		i++;
@@ -45,9 +45,9 @@ static void	delete_var(char	***tab, char *input)
 
 int	unset(t_data *data, t_cmd *cmd)
 {
-	int	i;
+	int		i;
 	char	**input;
-	
+
 	input = get_cmd_line(cmd->arg->value, cmd->arg->next);
 	if (!input || !*input)
 		return (0);
