@@ -15,14 +15,23 @@
 int	handle_export_error(char *input)
 {
 	int	tmp_fd;
+	int	i;
 
+	i = -1;
 	tmp_fd = dup(1);
 	dup2(2, 1);
-	if (!(ft_isalpha(input[0]) || input[0] == '_'))
+	while (input[++i])
 	{
-		printf("minishell: export : `%s': not a valid identifier\n", input);
-		dup2(tmp_fd, 1);
-		return (1);
+		if (i > 0 && input[i] == '=')
+			break ;
+		if (!(ft_isalnum(input[i]) || ft_strchr("_\\", input[i]))
+			|| !(ft_isalpha(input[0])
+			|| ft_strchr("_\\", input[0])))
+		{
+			printf("minishell: export : `%s': not a valid identifier\n", input);
+			dup2(tmp_fd, 1);
+			return (1);
+		}
 	}
 	dup2(tmp_fd, 1);
 	return (0);

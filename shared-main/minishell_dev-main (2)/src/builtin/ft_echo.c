@@ -16,7 +16,10 @@ int	ft_echo(t_cmd *cmd)
 {
 	char	**args;
 	
-	args = get_cmd_line(cmd->arg->value, cmd->arg->next);
+	if (cmd->arg)
+		args = get_cmd_line(cmd->arg->value, cmd->arg->next);
+	else
+		args = NULL;
 	if (!args)
 		return (write(1, "\n", 1), 0);
 	if (*args)

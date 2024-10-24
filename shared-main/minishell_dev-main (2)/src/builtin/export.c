@@ -29,6 +29,7 @@ int	ft_export(t_data *data, t_cmd *cmd)
 		{
 			retval = 1;
 			input++;
+			continue ;
 		}
 		if (ft_strchr(*input, '='))
 			ft_insert_var(input, &data->env);
